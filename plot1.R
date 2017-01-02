@@ -1,0 +1,8 @@
+library("data.table")
+pow_cons<-read.table("household_power_consumption.txt", header=TRUE, sep=";")
+pow_cons$datetime<-strptime(paste(pow_cons$Date,pow_cons$Time), "%d/%m/%Y %H:%M:%S")
+pow_cons_subset <- subset(pow_cons, datetime > strptime("2007-01-31 23:59:00 EST","%Y-%m-%d %H:%M:%S") & datetime < strptime("2007-02-03 00:00:00 EST","%Y-%m-%d %H:%M:%S"))
+pow_cons_subset$Global_active_p <- as.numeric(as.character(pow_cons_subset$Global_active_power))
+hist(pow_cons_subset$Global_active_p, xlab="Global Active Power (kilowatts)", ylab="Frequency", main="Global Active Power", col="Red")
+dev.copy(png, file = "plot1.png")
+dev.off()
